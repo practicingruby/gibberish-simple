@@ -1,3 +1,5 @@
+#coding: UTF-8
+
 module Gibberish
   module Localize
     @@default_language = :en

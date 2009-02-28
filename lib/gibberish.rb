@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 require 'gibberish/localize'
 require 'gibberish/string_ext'
 

@@ -1,3 +1,5 @@
+# coding: UTF-8
+
 module Gibberish
   module StringExt
     def brackets_with_translation(*args)
