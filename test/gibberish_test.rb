@@ -4,80 +4,80 @@ begin
   require 'rubygems'
   require 'test/spec'
 rescue LoadError
-  puts "==> The test/spec library (gem) is required to run the Gibberish tests."
+  puts "==> The test/spec library (gem) is required to run the Gibberish::Simple tests."
   exit
 end
 
 $:.unshift File.dirname(__FILE__) + '/../lib'
-RAILS_ROOT = File.dirname(__FILE__) + '/..'
 
 require 'active_support'
-require 'gibberish'
+require 'gibberish/simple'
 
-Gibberish.load_languages!
+Gibberish::Simple.language_paths << File.dirname(__FILE__) + '/..'
+Gibberish::Simple.load_languages!
 
-context "After loading languages, Gibberish" do
+context "After loading languages, Gibberish::Simple" do
   teardown do
-    Gibberish.current_language = nil
+    Gibberish::Simple.current_language = nil
   end
 
   specify "should know what languages it has translations for" do
-    Gibberish.languages.should.include :es
+    Gibberish::Simple.languages.should.include :es
   end
 
   specify "should know if it is using the default language" do
-    Gibberish.should.be.default_language
+    Gibberish::Simple.should.be.default_language
   end
 
   specify "should be able to switch between existing languages" do
-    Gibberish.current_language = :es
+    Gibberish::Simple.current_language = :es
     string = "Welcome, friend!"
     string[:welcome_friend].should.not.equal string
 
-    Gibberish.current_language = :fr
+    Gibberish::Simple.current_language = :fr
     string[:welcome_friend].should.not.equal string
 
-    Gibberish.current_language = nil
+    Gibberish::Simple.current_language = nil
     string[:welcome_friend].should.equal string
   end
 
   specify "should be able to switch languages using strings" do
-    Gibberish.current_language = 'es'
-    Gibberish.current_language.should.equal :es
+    Gibberish::Simple.current_language = 'es'
+    Gibberish::Simple.current_language.should.equal :es
   end
 
   specify "should be able to switch to the default language at any time" do
-    Gibberish.current_language = :fr
-    Gibberish.should.not.be.default_language
+    Gibberish::Simple.current_language = :fr
+    Gibberish::Simple.should.not.be.default_language
 
-    Gibberish.current_language = nil
-    Gibberish.should.be.default_language
+    Gibberish::Simple.current_language = nil
+    Gibberish::Simple.should.be.default_language
   end
 
   specify "should be able to switch to a certain language for the duration of a block" do
-    Gibberish.should.be.default_language
+    Gibberish::Simple.should.be.default_language
 
     string = "Welcome, friend!"
     string[:welcome_friend].should.equal string
 
-    Gibberish.use_language :es do
+    Gibberish::Simple.use_language :es do
       string[:welcome_friend].should.not.equal string
-      Gibberish.should.not.be.default_language
+      Gibberish::Simple.should.not.be.default_language
     end
 
-    Gibberish.should.be.default_language
+    Gibberish::Simple.should.be.default_language
     string[:welcome_friend].should.equal string
   end
 
   specify "should return an array of the languages it loaded" do
-    languages = Gibberish.load_languages!
+    languages = Gibberish::Simple.load_languages!
     languages.should.be.an.instance_of Array
     languages.should.include :es
     languages.should.include :fr
   end
 
   specify "should know what languages it has loaded" do
-    languages = Gibberish.languages
+    languages = Gibberish::Simple.languages
     languages.should.be.an.instance_of Array
     languages.should.include :es
     languages.should.include :fr
@@ -85,22 +85,22 @@ context "After loading languages, Gibberish" do
 
   specify "should be able to accept new, unique reserved keys" do
     key = :something_evil
-    Gibberish.add_reserved_key key
-    Gibberish.reserved_keys.should.include key
-    Gibberish.reserved_keys.size.should.equal 2
-    Gibberish.add_reserved_key key
-    Gibberish.add_reserved_key key
-    Gibberish.reserved_keys.size.should.equal 2
+    Gibberish::Simple.add_reserved_key key
+    Gibberish::Simple.reserved_keys.should.include key
+    Gibberish::Simple.reserved_keys.size.should.equal 2
+    Gibberish::Simple.add_reserved_key key
+    Gibberish::Simple.add_reserved_key key
+    Gibberish::Simple.reserved_keys.size.should.equal 2
   end
   
   specify "should have loaded language files from directories other than the default" do
-    Gibberish.language_paths << File.dirname(__FILE__)
-    Gibberish.load_languages!
+    Gibberish::Simple.language_paths << File.dirname(__FILE__)
+    Gibberish::Simple.load_languages!
     string = "I don't speak Babble."
-    Gibberish.use_language :es do
+    Gibberish::Simple.use_language :es do
       string[:no_babble].should.equal "No hablo Bable."
     end
-    Gibberish.use_language :fr do
+    Gibberish::Simple.use_language :fr do
       string[:no_babble].should.equal "Je ne parle pas Babble."
     end
   end
@@ -108,16 +108,16 @@ end
 
 context "When no language is set" do
   setup do
-    Gibberish.current_language = nil
+    Gibberish::Simple.current_language = nil
   end
 
   specify "the default language should be used" do
-    Gibberish.current_language.should.equal Gibberish.default_language
+    Gibberish::Simple.current_language.should.equal Gibberish::Simple.default_language
   end
 
   specify "a gibberish string should return itself" do
     string = "Welcome, friend!"
-    Gibberish.translate(string, :welcome_friend).should.equal string
+    Gibberish::Simple.translate(string, :welcome_friend).should.equal string
 
     string[:welcome_friend].should.equal string
   end
@@ -125,11 +125,11 @@ end
 
 context "When a non-existent language is set" do
   setup do
-    Gibberish.current_language = :klingon
+    Gibberish::Simple.current_language = :klingon
   end
 
   specify "the default language should be used" do
-    Gibberish.current_language.should.equal Gibberish.default_language
+    Gibberish::Simple.current_language.should.equal Gibberish::Simple.default_language
   end
 
   specify "gibberish strings should return themselves" do
@@ -174,22 +174,22 @@ context "A gibberish string (in general)" do
   end
 
   specify "should set default key to underscored string" do
-    Gibberish.current_language = :es
+    Gibberish::Simple.current_language = :es
     'welcome friend'[].should == "¡Bienvenido amigo!"
   end
 end
 
 context "When a non-default language is set" do
   setup do
-    Gibberish.current_language = :es
+    Gibberish::Simple.current_language = :es
   end
 
   specify "that language should be used" do
-    Gibberish.current_language.should.equal :es
+    Gibberish::Simple.current_language.should.equal :es
   end
 
   specify "the default language should not be used" do
-    Gibberish.should.not.be.default_language
+    Gibberish::Simple.should.not.be.default_language
   end
 
   specify "a gibberish string should return itself if a corresponding key is not found" do
