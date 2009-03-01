@@ -10,7 +10,6 @@ end
 
 $:.unshift File.dirname(__FILE__) + '/../lib'
 
-require 'active_support'
 require 'gibberish/simple'
 
 Gibberish::Simple.language_paths << File.dirname(__FILE__) + '/..'
@@ -79,7 +78,7 @@ context "After loading languages, Gibberish::Simple" do
   end
 
   specify "should know what languages it has loaded" do
-    languages = Gibberish::Simple.languages
+    languages = Gibberish::Simple.language_names
     languages.should.be.an.instance_of Array
     languages.should.include :es
     languages.should.include :fr

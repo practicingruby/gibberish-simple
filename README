@@ -1,3 +1,15 @@
 = Gibberish::Simple
 
-Gibberish::Simple
+Gibberish::Simple is a Ruby 1.9 based standalone version of defunkt's Gibberish
+rails plugin which has no external dependencies. Localized strings are filtered 
+through a Gibberish::Simple#T() instead of String#[], which means that 
+Gibberish::Simple does not modify core Ruby. Otherwise, the library is mostly 
+API compatible with Gibberish, and Chris definitely deserves  credit for
+all the hard parts.
+
+Because Gibberish::Simple is not a Rails plugin, you need to manually tell it
+where to find your translations by appending the path of your application.
+
+More details to come.  If you have questions, email:
+
+gregory.t.brown@gmail.com
