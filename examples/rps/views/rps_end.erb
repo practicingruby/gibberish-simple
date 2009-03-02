@@ -1,0 +1,12 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+  <% translated do %>
+    <p><%= T("You", :you) %>: <%= weapon_name(@player_weapon) %></p>
+    <p><%= T("Opponent", :opponent) %>: <%= weapon_name(@opponent_weapon) %></p>
+    <h3><%= end_game_message %></h3>
+  <% end %>
+</body>
+</html>

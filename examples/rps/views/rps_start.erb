@@ -1,0 +1,17 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+  <form method="post">
+    <% translated do %>
+      <% ["Rock", "Paper", "Scissors"].each do |weapon| %>
+        <input type="radio" name="weapon" value="<%= weapon %>">
+          <%= weapon_name(weapon) %>
+        </input>
+      <% end %>
+      <input type="submit" value="<%= T('Shoot!',:shoot) %>">
+   <% end %>
+  </form>
+</body>
+</html>

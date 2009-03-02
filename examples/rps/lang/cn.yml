@@ -1,0 +1,11 @@
+win: 你赢了
+lose: 你输了
+tie: 平局
+
+rock: 石头
+paper: 布
+scissors: 剪刀
+
+shoot: 开
+you: 你
+opponent: 对手
