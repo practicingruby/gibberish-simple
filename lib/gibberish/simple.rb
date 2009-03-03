@@ -104,5 +104,7 @@ module Gibberish
       args.flatten!
       Gibberish::Simple.translate(string, args.shift, *args)
     end
+
+    module_function :T
   end
 end
